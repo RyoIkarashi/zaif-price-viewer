@@ -3,84 +3,98 @@ module.exports = {
     name: 'BITCOIN',
     unit: 'btc',
     image: '',
-    isTradePath: false
+    isTradePath: false,
+    type: 'currency',
   },
   ethereum: {
     name: 'ETHEREUM',
     unit: 'eth',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'currency',
   },
   nem: {
     name: 'NEM',
     unit: 'xem',
     image: '',
-    isTradePath: false
+    isTradePath: false,
+    type: 'currency',
   },
   bitcoin_cash: {
     name: 'BITCOIN CASH',
     unit: 'bch',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'currency',
   },
   mona: {
     name: 'MONA',
     unit: 'mona',
     image: '',
-    isTradePath: false
+    isTradePath: false,
+    type: 'currency',
   },
   sjcx: {
     name: 'SJCX',
     unit: 'sjcx',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   zen: {
     name: 'ZEN',
     unit: 'jpyz',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   ncxc: {
     name: 'NCXC',
     unit: 'ncxc',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   cicc: {
     name: 'CICC',
     unit: 'cicc',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   pepecash: {
     name: 'PEPECACHE',
     unit: 'pepecash',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   xcp: {
     name: 'XCP',
     unit: 'xcp',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   bitcrystals: {
     name: 'BITCRYSTALS',
     unit: 'bitcrystals',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   zaif: {
     name: 'ZAIF',
     unit: 'zaif',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
   fscc: {
     name: 'FSCC',
     unit: 'fscc',
     image: '',
-    isTradePath: true
+    isTradePath: true,
+    type: 'token',
   },
 };

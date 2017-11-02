@@ -28,15 +28,17 @@ const floatFormat = (number, n) => {
 }
 
 axios.all([...getAllCoinsRate, ...getAllCoinsTrades, getBalance]).then(result => {
-  const rates = result.slice(0, getAllCoinsRate.length);
-  const trades = result.slice(getAllCoinsRate.length, getAllCoinsRate.length + getAllCoinsTrades.length);
+  const rates    = result.slice(0, getAllCoinsRate.length);
+  const trades   = result.slice(getAllCoinsRate.length, getAllCoinsRate.length + getAllCoinsTrades.length);
   const balances = result.slice(getAllCoinsRate.length + getAllCoinsTrades.length)[0].funds;
 
   let totalBalance = balances.jpy;
 
-  const coinsInfo = mergeCoinsAndInfo({ rates, balances, trades });
+  const coinsInfo  = mergeCoinsAndInfo({ rates, balances, trades });
+  const currencies = coinsInfo.filter(coin => coin.type === 'currency');
+  const tokens     = coinsInfo.filter(coin => coin.type === 'token');
 
-  const bitbarContent = coinsInfo.map((coin, index) => {
+  const bitbarContent = (coins) => coins.map((coin, index) => {
     const { name, image, unit, rate, balance, isTradePath, trades } = coin;
 
     const bids = trades.filter(trade => trade.trade_type === 'bid').map(bid => bid.amount);
@@ -46,7 +48,7 @@ axios.all([...getAllCoinsRate, ...getAllCoinsTrades, getBalance]).then(result =>
     const totalAsks = asks.reduce((sum, value) => sum + value * rate, 1);
 
     const difference = totalBids - totalAsks;
-    const prefix = difference > 0 ? '+' : '';
+    const prefix     = difference > 0 ? '+' : '';
 
     totalBalance += Number(rate) * Number(balance);
 
@@ -57,9 +59,16 @@ axios.all([...getAllCoinsRate, ...getAllCoinsTrades, getBalance]).then(result =>
     };
   });
 
+  const currenciesContent = bitbarContent(currencies);
+  const tokensContent = bitbarContent(tokens);
+
   bitbar([
     `[Z] ¥${totalBalance}`,
     bitbar.sep,
-    ...bitbarContent,
+    "CURRENCIES",
+    ...currenciesContent,
+    bitbar.sep,
+    "TOKENS",
+    ...tokensContent,
   ]);
 });
