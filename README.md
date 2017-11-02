@@ -19,7 +19,8 @@ ln -s ./zaif-price-viewer/zaif.10s.js
 Edit `env.json` and replace `<YOUR_ACCESS_KEY>` and `<YOUR_ACCESS_SECRET_KEY>` with yours.
 
 ## Screenshot
-![screenshot](https://user-images.githubusercontent.com/5750408/32332763-a55c8a28-c029-11e7-9e18-ed9308c7fc3d.png)
+![screenshot](https://user-images.githubusercontent.com/5750408/32333718-ec1d99e6-c02b-11e7-8990-c26f6629a1df.png)
+
 
 ## License
 MIT
