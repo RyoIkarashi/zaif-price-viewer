@@ -1,0 +1,11 @@
+{
+  "name": "bitbar-zaif-price-viewer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.17.0",
+    "bitbar": "^0.3.0",
+    "zaif.jp": "^0.1.15"
+  }
+}
