@@ -14,18 +14,23 @@
 // Mona:    MC7XMmi1YXoJH19D1q4H8ijBkdvarWBTMi
 
 const bitbar = require('bitbar');
-const zaif = require('zaif.jp');
-const axios = require('axios');
-const COINS = require('./coins');
-const ENV = require('./env.json');
+const zaif   = require('zaif.jp');
+const axios  = require('axios');
+let COINS    = require('./coins');
+const ENV    = require('./env.json');
 const COMPARATIVE_UNIT = 'jpy';
 
+COINS = Object.keys(COINS).map(coin => {
+  COINS[coin].unit = COINS[coin].isTradePath ? COINS[coin].unit.toUpperCase() : COINS[coin].unit
+  return COINS[coin]
+})
+
 const privateApi = zaif.createPrivateApi(ENV.access_key, ENV.secret_key, 'user agent is node-zaif');
-const publicApi = zaif.PublicApi;
+const publicApi  = zaif.PublicApi;
 const getBalance = privateApi.getInfo();
 
 const getAllCoinsTrades = Object.keys(COINS).map(coin => publicApi.trades(`${COINS[coin].unit}_${COMPARATIVE_UNIT}`));
-const getAllCoinsRate = Object.keys(COINS).map(coin => publicApi.lastPrice(`${COINS[coin].unit}_${COMPARATIVE_UNIT}`));
+const getAllCoinsRate   = Object.keys(COINS).map(coin => publicApi.lastPrice(`${COINS[coin].unit}_${COMPARATIVE_UNIT}`));
 const mergeCoinsAndInfo = (info) => Object.keys(COINS).map((coin, index) => {
   const { rates, balances, trades } = info;
   return Object.assign({}, COINS[coin], {
@@ -45,7 +50,7 @@ axios.all([...getAllCoinsRate, ...getAllCoinsTrades, getBalance]).then(result =>
   const trades   = result.slice(getAllCoinsRate.length, getAllCoinsRate.length + getAllCoinsTrades.length);
   const balances = result.slice(getAllCoinsRate.length + getAllCoinsTrades.length)[0].funds;
 
-  let totalBalance = balances.jpy;
+  let totalBalance = 0;
 
   const coinsInfo  = mergeCoinsAndInfo({ rates, balances, trades });
   const currencies = coinsInfo.filter(coin => coin.type === 'currency');
@@ -66,9 +71,9 @@ axios.all([...getAllCoinsRate, ...getAllCoinsTrades, getBalance]).then(result =>
     totalBalance += Number(rate) * Number(balance);
 
     return {
-      text: `[${unit.toUpperCase()}] ${rate} (¥${prefix}${floatFormat(difference, 3)})`,
+      text: `[${unit.toUpperCase()}] ¥${rate} (¥${prefix}${floatFormat(difference, 3)}) / ¥${floatFormat(Number(rate) * Number(balance), 3)}`,
       color: difference < 0 ? ENV.colors.red : ENV.colors.green,
-      href: `https://zaif.jp/trade${isTradePath ? '/' : '_'}${unit}_jpy`
+      href: `https://zaif.jp/trade${isTradePath ? '/' : '_'}${unit.toLowerCase()}_jpy`
     };
   });
 
@@ -76,12 +81,18 @@ axios.all([...getAllCoinsRate, ...getAllCoinsTrades, getBalance]).then(result =>
   const tokensContent = bitbarContent(tokens);
 
   bitbar([
-    `[Z] ¥${totalBalance}`,
+    `¥${floatFormat(totalBalance, 3)}`,
     bitbar.sep,
     "CURRENCIES",
     ...currenciesContent,
     bitbar.sep,
     "TOKENS",
     ...tokensContent,
+    bitbar.sep,
+    "JPY",
+    `¥${balances.jpy}`,
+    bitbar.sep,
+    "Total Balance (JPY inc)",
+    `¥${floatFormat(totalBalance + balances.jpy, 3)}`,
   ]);
 });

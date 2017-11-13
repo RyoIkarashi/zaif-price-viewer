@@ -63,7 +63,7 @@ module.exports = {
     type: 'token',
   },
   pepecash: {
-    name: 'PEPECACHE',
+    name: 'PEPECACH',
     unit: 'pepecash',
     image: '',
     isTradePath: true,
